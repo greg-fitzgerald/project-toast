@@ -1,10 +1,13 @@
 import React from 'react';
+import useKeydownHook from '../../hooks/KeydownHook';
 
 export const ToastContext = React.createContext();
 
 function ToastProvider({children}) {
   const [toasts, setToasts] = React.useState([]);
   
+  useKeydownHook('Escape', () => {setToasts([])})
+
   const createNewToast = (message, variant) => {
     const newToast = {
       message,
