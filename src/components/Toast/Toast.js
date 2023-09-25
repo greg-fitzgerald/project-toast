@@ -20,8 +20,6 @@ const ICONS_BY_VARIANT = {
 
 function Toast({message, variant, close}) {
 
-  console.log(close)
-
   const Icon = ICONS_BY_VARIANT[variant];
 
   return (
