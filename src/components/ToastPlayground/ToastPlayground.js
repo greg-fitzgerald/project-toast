@@ -2,7 +2,7 @@ import React from 'react';
 
 import Button from '../Button';
 
-import Toast from '../Toast';
+import {ToastContext} from '../ToastProvider';
 
 import ToastShelf from '../ToastShelf';
 
@@ -13,24 +13,14 @@ const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 function ToastPlayground() {
   const [message, setMessage] = React.useState('');
   const [variant, setVariant] = React.useState('notice');
-  const [toastList, setToastList] = React.useState([]);
+  
+  const { toasts, createNewToast } = React.useContext(ToastContext);
 
-  const createNewToast = (event) => {
+  const submitToast = (event) => {
     event.preventDefault();
-
-    const newToast = {
-      message,
-      variant,
-      id: Math.random(),
-      close: () => {
-        setToastList(toastList.filter((toast) => toast.id !== newToast.id));
-      }
-    };
-
-    setToastList([...toastList, newToast]);
+    createNewToast(message, variant);
     setMessage('');
     setVariant('notice');
-
   }
 
   return (
@@ -40,9 +30,9 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      <ToastShelf toastList={toastList}/>
+      <ToastShelf toastList={toasts.toasts}/>
 
-      <form onSubmit={(event) => {createNewToast(event)}}>
+      <form onSubmit={(event) => {submitToast(event)}}>
         <div className={styles.controlsWrapper}>
           <div className={styles.row}>
             <label
